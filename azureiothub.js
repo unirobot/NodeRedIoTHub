@@ -75,7 +75,7 @@ module.exports = function (RED) {
                 node.log('Connected to Azure IoT Hub.');
                 setStatus(node, statusEnum.connected);
 
-                // Check if a message is pending and send it 
+                // Check if a message is pending and send it
                 if (pendingMessage) {
                     node.log('Message is pending. Sending it to Azure IoT Hub.');
                     // Send the pending message
@@ -119,7 +119,7 @@ module.exports = function (RED) {
         return ((clientConnectionString != cs) || (clientProtocol != proto));
     }
 
-    // Main function called by Node-RED    
+    // Main function called by Node-RED
     function AzureIoTHubNode(config) {
         // Store node for further use
         var node = this;
@@ -144,7 +144,11 @@ module.exports = function (RED) {
             //Creating connectionString
             //Sample
             //HostName=sample.azure-devices.net;DeviceId=sampleDevice;SharedAccessKey=wddU//P8fdfbSBDbIdghZAoSSS5gPhIZREhy3Zcv0JU=
-            newConnectionString = "HostName=" + node.credentials.hostname + ";DeviceId=" + messageJSON.deviceId + ";SharedAccessKey=" + messageJSON.key
+            var hostname = node.credentials.hostname;
+            if(messageJSON.hostname !== undefined){
+                hostname  = messageJSON.hostname;
+            }
+            newConnectionString = "HostName=" + hostname + ";DeviceId=" + messageJSON.deviceId + ";SharedAccessKey=" + messageJSON.key
             newProtocol = messageJSON.protocol;
 
             // Sending data to Azure IoT Hub Hub using specific connectionString
