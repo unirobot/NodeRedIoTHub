@@ -217,7 +217,9 @@ module.exports = function (RED) {
     function printResultFor(node, op) {
         return function printResult(err, res) {
             if (err) node.error(op + ' error: ' + err.toString());
-            if (res) node.log(op + ' status: ' + res.constructor.name);
+            if (res && node.log !== undefined) {
+                 node.log(op + ' status: ' + res.constructor.name);
+            }
         };
     }
 }
