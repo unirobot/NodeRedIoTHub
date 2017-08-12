@@ -71,6 +71,7 @@ module.exports = function (RED) {
             if (err) {
                 node.error('Could not connect: ' + err.message);
                 setStatus(node, statusEnum.disconnected);
+                client = undefined;
             } else {
                 node.log('Connected to Azure IoT Hub.');
                 setStatus(node, statusEnum.connected);
@@ -109,7 +110,7 @@ module.exports = function (RED) {
         if (client) {
             node.log('Disconnecting from Azure IoT Hub');
             client.removeAllListeners();
-            client.close(printResultFor('close'));
+            client.close(node,printResultFor('close'));
             client = null;
             setStatus(node, statusEnum.disconnected);
         }
@@ -149,7 +150,11 @@ module.exports = function (RED) {
                 hostname  = messageJSON.hostname;
             }
             newConnectionString = "HostName=" + hostname + ";DeviceId=" + messageJSON.deviceId + ";SharedAccessKey=" + messageJSON.key
-            newProtocol = messageJSON.protocol;
+            if(messageJSON.protocol !== undefined){
+                newProtocol = messageJSON.protocol;
+            } else {
+                newProtocol = config.protocol;
+            }
 
             // Sending data to Azure IoT Hub Hub using specific connectionString
             sendMessageToIoTHub(node, messageJSON.data, nodeConfigUpdated(newConnectionString, newProtocol));
@@ -217,9 +222,7 @@ module.exports = function (RED) {
     function printResultFor(node, op) {
         return function printResult(err, res) {
             if (err) node.error(op + ' error: ' + err.toString());
-            if (res && node.log !== undefined) {
-                 node.log(op + ' status: ' + res.constructor.name);
-            }
+            if (res) node.log(op + ' status: ' + res.constructor.name);
         };
     }
 }
