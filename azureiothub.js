@@ -71,7 +71,7 @@ module.exports = function (RED) {
             if (err) {
                 node.error('Could not connect: ' + err.message);
                 setStatus(node, statusEnum.disconnected);
-                client = undefined;
+                client = null;
             } else {
                 node.log('Connected to Azure IoT Hub.');
                 setStatus(node, statusEnum.connected);
@@ -110,7 +110,7 @@ module.exports = function (RED) {
         if (client) {
             node.log('Disconnecting from Azure IoT Hub');
             client.removeAllListeners();
-            client.close(node,printResultFor('close'));
+            client.close(printResultFor('close'));
             client = null;
             setStatus(node, statusEnum.disconnected);
         }
@@ -222,7 +222,9 @@ module.exports = function (RED) {
     function printResultFor(node, op) {
         return function printResult(err, res) {
             if (err) node.error(op + ' error: ' + err.toString());
-            if (res) node.log(op + ' status: ' + res.constructor.name);
+            if (res && node.log !== undefined) {
+                    node.log(op + ' status: ' + res.constructor.name);
+            }
         };
     }
 }
