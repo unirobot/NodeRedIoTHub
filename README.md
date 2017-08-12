@@ -12,12 +12,14 @@ This node allows you to send messages to your Azure IoT Hub.  It has the followi
 ```
 {
   "deviceId": "testenode1",
+  "hostname": "sample.azure-devices.net",
   "key": "cw3nniq77BbjpOCDLqb7xEFTU509HeR6Ki1NwR20jj0=",
   "protocol": "amqp",
   "data": "{tem: 25, wind: 20}"
 }
 ```
 - deviceId is your device's unique id.
+- hostname is your azure hostname.
 - key is your device's primary or secondary key.
 - protocol options are: amqp, amqpws, mqtt or http.
 - data can either be a plain string or string wrapped JSON.
@@ -37,8 +39,6 @@ This node allows you to registers devices with your Azure IoT Hub. It has the fo
 ```
 npm install -g node-red-contrib-azure-iot-hub
 ```
-
-
 
 ## How to Use
 
@@ -71,8 +71,8 @@ Follow the instructions [here](http://nodered.org/docs/getting-started/installat
 
 6. Double-click the Azure IoT Hub Registry node, enter your IoT Hub connection string and click Done.
 
-    ![](images/azureiot-registry-node.png) 
-    
+    ![](images/azureiot-registry-node.png)
+
     ![](images/azureiot-registry-input.png)
 
 7. Click Deploy
@@ -80,7 +80,7 @@ Follow the instructions [here](http://nodered.org/docs/getting-started/installat
     ![](images/deploy.png)
 
 8. Click the square button on the left side of the Register Payload node.
-    
+
     ![](images/register-payload-node.png)
 
 9. Click on the debug tab to your right and you'll see the device's primary and secondary keys.
@@ -107,7 +107,7 @@ Follow the instructions [here](http://nodered.org/docs/getting-started/installat
     ![](images/deploy.png)
 
 4. Click the square button on the left side of the Send Payload node.
-    
+
     ![](images/send-payload-node.png)
 
 5. You should then see a Message sent debug message in the debug pane.
