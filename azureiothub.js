@@ -145,7 +145,8 @@ module.exports = function (RED) {
             //Creating connectionString
             //Sample
             //HostName=sample.azure-devices.net;DeviceId=sampleDevice;SharedAccessKey=wddU//P8fdfbSBDbIdghZAoSSS5gPhIZREhy3Zcv0JU=
-            var hostname = node.credentials.hostname;
+            // var hostname = node.credentials.hostname;
+            var hostname = node.hostname;
             if(messageJSON.hostname !== undefined){
                 hostname  = messageJSON.hostname;
             }
@@ -176,7 +177,12 @@ module.exports = function (RED) {
                 msg.payload = JSON.parse(msg.payload);
             }
 
-            var registry = Registry.fromConnectionString(node.credentials.connectionString);
+            // var registry = Registry.fromConnectionString(node.credentials.connectionString);
+            var connectionString = node.connectionString;
+            if(msg.connectionString !== undefined){
+                connectionString = msg.connectionString;
+            }
+            var registry = Registry.fromConnectionString(connectionString);
 
             registry.create(msg.payload, function (err, device) {
                 if (err) {
@@ -198,22 +204,24 @@ module.exports = function (RED) {
 
     // Registration of the node into Node-RED
     RED.nodes.registerType("azureiothub", AzureIoTHubNode, {
-        credentials: {
-            hostname: { type: "text" }
-        },
+        // credentials: {
+        //     hostname: { type: "text" }
+        // },
         defaults: {
             name: { value: "Azure IoT Hub" },
-            protocol: { value: "amqp" }
+            protocol: { value: "amqp" },
+            hostname: { type: "text" }
         }
     });
 
     // Registration of the node into Node-RED
     RED.nodes.registerType("azureiothubregistry", IoTHubRegistry, {
-        credentials: {
-            connectionString: { type: "text" }
-        },
+        // credentials: {
+        //     connectionString: { type: "text" }
+        // },
         defaults: {
             name: { value: "Azure IoT Hub Registry" },
+            connectionString: { type: "text" }
         }
     });
 

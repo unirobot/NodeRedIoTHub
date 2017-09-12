@@ -4,16 +4,17 @@
         color: '#00abec',
         defaults: {
             name: {value:"Azure IoT Hub"},
-            protocol: {value:"amqp"}
+            protocol: {value:"amqp"},
+            hostname: {type:"text"}
         },
         inputs:1,
         outputs:1,
         icon: "azureiothub.png",
         label: function() {
             return this.name||"Azure IoT Hub";
-        },
-        credentials: {
-            hostname: {type:"text"}
+        // },
+        // credentials: {
+        //     hostname: {type:"text"}
         }
     });
 
@@ -21,16 +22,17 @@
         category: 'cloud',
         color: '#00abec',
         defaults: {
-            name: {value:"Azure IoT Hub Registry"}
+            name: {value:"Azure IoT Hub Registry"},
+            connectionString: {type:"text"}
         },
         inputs:1,
         outputs:1,
         icon: "azureiothub.png",
         label: function() {
             return this.name||"Azure IoT Hub Registry";
-        },
-        credentials: {
-            connectionString: {type:"text"}
+        // },
+        // credentials: {
+        //     connectionString: {type:"text"}
         }
     });
 </script>
