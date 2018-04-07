@@ -131,6 +131,9 @@ module.exports = function (RED) {
 
         // Create the Node-RED node
         RED.nodes.createNode(this, config);
+        node.hostname = config.hostname;
+        node.protocol = config.protocol;
+
         node.on('input', function (msg) {
 
             var messageJSON = null;
@@ -157,7 +160,7 @@ module.exports = function (RED) {
             if(messageJSON.protocol !== undefined){
                 newProtocol = messageJSON.protocol;
             } else {
-                newProtocol = config.protocol;
+                newProtocol = node.protocol;
             }
 
             // Sending data to Azure IoT Hub Hub using specific connectionString
@@ -174,6 +177,7 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
 
         var node = this;
+        node.connectionString = config.connectionString;
 
         node.on('input', function (msg) {
             if (typeof (msg.payload) == 'string') {
@@ -275,7 +279,8 @@ module.exports = function (RED) {
 
         setStatus(node, statusEnum.disconnected);
 
-        connectToEventHub( this, node.credentials.connectionString );
+        connectToEventHub( this, config.connectionString );
+        // connectToEventHub( this, node.credentials.connectionString );
 
         node.on('close', function() {
             disconnectFromEventHub(node);
@@ -286,9 +291,15 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
 
         var node = this;
+        node.connectionString = config.connectionString;
 
         node.on('input', function (msg) {
-            var registry = Registry.fromConnectionString(node.credentials.connectionString);
+            var connectionString = node.connectionString;
+            if(msg.connectionString !== undefined){
+                connectionString = msg.connectionString;
+            }
+            var registry = Registry.fromConnectionString(connectionString);
+            // var registry = Registry.fromConnectionString(node.credentials.connectionString);
 
             if( typeof msg.payload === "string" ) var query = registry.createQuery("SELECT * FROM devices WHERE deviceId ='" + msg.payload + "'");
             else var query = registry.createQuery("SELECT * FROM devices");
@@ -340,7 +351,8 @@ module.exports = function (RED) {
         //     connectionString: { type: "text" }
         // },
         defaults: {
-            name: { value: "Azure IoT Hub Receiver" }
+            name: { value: "Azure IoT Hub Receiver" },
+            connectionString: { type: "text" }
         }
     });
 
@@ -349,7 +361,8 @@ module.exports = function (RED) {
         //     connectionString: { type: "text" }
         // },
         defaults: {
-            name: { value: "Azure IoT Hub Device Twin" }
+            name: { value: "Azure IoT Hub Device Twin" },
+            connectionString: { type: "text" }
         }
     });
 
