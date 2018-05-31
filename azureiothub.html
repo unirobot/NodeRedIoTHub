@@ -4,8 +4,7 @@
         color: '#00abec',
         defaults: {
             name: {value:"Azure IoT Hub"},
-            protocol: {value:"amqp"},
-            hostname: {type:"text"}
+            protocol: {value:"amqp"}
         },
         inputs:1,
         outputs:1,
@@ -15,9 +14,9 @@
         },
         paletteLabel: function(){
             return "Azure IoT Hub";
-        // },
-        // credentials: {
-        //     hostname: {type:"text"}
+        },
+        credentials: {
+            hostname: {type:"text"}
         }
     });
 
@@ -25,8 +24,7 @@
         category: 'cloud',
         color: '#00abec',
         defaults: {
-            name: {value:"Azure IoT Hub Registry"},
-            connectionString: {type:"text"}
+            name: {value:"Azure IoT Hub Registry"}
         },
         inputs:1,
         outputs:1,
@@ -36,9 +34,9 @@
         },
         paletteLabel: function(){
             return "Azure IoT Hub Registry";
-        // },
-        // credentials: {
-        //     connectionString: {type:"text"}
+        },
+        credentials: {
+            connectionString: {type:"text"}
         }
     });
 
@@ -46,8 +44,7 @@
         category: 'cloud',
         color: '#00abec',
         defaults: {
-            name: {value:"Azure IoT Hub Receiver"},
-            connectionString: {type:"text"}
+            name: {value:"Azure IoT Hub Receiver"}
         },
         inputs:0,
         outputs:1,
@@ -57,9 +54,9 @@
         },
         paletteLabel: function(){
             return "Azure IoT Hub Receiver";
-        // },
-        // credentials: {
-        //     connectionString: {type:"text"}
+        },
+        credentials: {
+            connectionString: {type:"text"}
         }
     });
 
@@ -67,8 +64,7 @@
         category: 'cloud',
         color: '#00abec',
         defaults: {
-            name: {value:"Azure IoT Hub Device Twin"},
-            connectionString: {type:"text"}
+            name: {value:"Azure IoT Hub Device Twin"}
         },
         inputs:1,
         outputs:1,
@@ -78,9 +74,9 @@
         },
         paletteLabel: function(){
             return "Azure IoT Hub Device Twin";
-        // },
-        // credentials: {
-        //     connectionString: {type:"text"}
+        },
+        credentials: {
+            connectionString: {type:"text"}
         }
     });
 </script>

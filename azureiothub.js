@@ -151,8 +151,7 @@ module.exports = function (RED) {
             //Creating connectionString
             //Sample
             //HostName=sample.azure-devices.net;DeviceId=sampleDevice;SharedAccessKey=wddU//P8fdfbSBDbIdghZAoSSS5gPhIZREhy3Zcv0JU=
-            // var hostname = node.credentials.hostname;
-            var hostname = node.hostname;
+            var hostname = node.credentials.hostname;
             if(messageJSON.hostname !== undefined){
                 hostname  = messageJSON.hostname;
             }
@@ -184,11 +183,11 @@ module.exports = function (RED) {
                 msg.payload = JSON.parse(msg.payload);
             }
 
-            // var registry = Registry.fromConnectionString(node.credentials.connectionString);
-            var connectionString = node.connectionString;
+            var connectionString = node.credentials.connectionString;
             if(msg.connectionString !== undefined){
                 connectionString = msg.connectionString;
             }
+            // var registry = Registry.fromConnectionString(node.credentials.connectionString);
             var registry = Registry.fromConnectionString(connectionString);
 
             registry.create(msg.payload, function (err, device) {
@@ -279,8 +278,7 @@ module.exports = function (RED) {
 
         setStatus(node, statusEnum.disconnected);
 
-        connectToEventHub( this, config.connectionString );
-        // connectToEventHub( this, node.credentials.connectionString );
+        connectToEventHub( this, node.credentials.connectionString );
 
         node.on('close', function() {
             disconnectFromEventHub(node);
@@ -291,10 +289,9 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
 
         var node = this;
-        node.connectionString = config.connectionString;
 
         node.on('input', function (msg) {
-            var connectionString = node.connectionString;
+            var connectionString = node.credentials.connectionString;
             if(msg.connectionString !== undefined){
                 connectionString = msg.connectionString;
             }
@@ -325,9 +322,9 @@ module.exports = function (RED) {
 
     // Registration of the node into Node-RED
     RED.nodes.registerType("azureiothub", AzureIoTHubNode, {
-        // credentials: {
-        //     hostname: { type: "text" }
-        // },
+        credentials: {
+            hostname: { type: "text" }
+        },
         defaults: {
             name: { value: "Azure IoT Hub" },
             protocol: { value: "amqp" },
@@ -337,9 +334,9 @@ module.exports = function (RED) {
 
     // Registration of the node into Node-RED
     RED.nodes.registerType("azureiothubregistry", IoTHubRegistry, {
-        // credentials: {
-        //     connectionString: { type: "text" }
-        // },
+        credentials: {
+            connectionString: { type: "text" }
+        },
         defaults: {
             name: { value: "Azure IoT Hub Registry" },
             connectionString: { type: "text" }
@@ -347,9 +344,9 @@ module.exports = function (RED) {
     });
 
     RED.nodes.registerType("azureiothubreceiver", AzureIoTHubReceiverNode, {
-        // credentials: {
-        //     connectionString: { type: "text" }
-        // },
+        credentials: {
+            connectionString: { type: "text" }
+        },
         defaults: {
             name: { value: "Azure IoT Hub Receiver" },
             connectionString: { type: "text" }
@@ -357,9 +354,9 @@ module.exports = function (RED) {
     });
 
     RED.nodes.registerType("azureiothubdevicetwin", AzureIoTHubDeviceTwin, {
-        // credentials: {
-        //     connectionString: { type: "text" }
-        // },
+        credentials: {
+            connectionString: { type: "text" }
+        },
         defaults: {
             name: { value: "Azure IoT Hub Device Twin" },
             connectionString: { type: "text" }
