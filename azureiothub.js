@@ -76,6 +76,9 @@ module.exports = function (RED) {
                 // works for me..
                 client = undefined;
             } else {
+                if(client === undefined){
+                    return;
+                }
                 node.log('Connected to Azure IoT Hub.');
                 setStatus(node, statusEnum.connected);
 
@@ -85,7 +88,6 @@ module.exports = function (RED) {
                     // Send the pending message
                     sendData(node, pendingMessage);
                 }
-
                 client.on('message', function (msg) {
                     // We received a message
                     node.log('Message received from Azure IoT Hub\n   Id: ' + msg.messageId + '\n   Payload: ' + msg.data);
